@@ -3,15 +3,16 @@
  */
 import React, { VFC } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
+import { LoginModalProvider } from '../features/Auth';
 
 type AppProviderProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
-export const AppProvider: VFC<AppProviderProps> = ({children}) => {
+export const AppProvider: VFC<AppProviderProps> = ({ children }) => {
   return (
     <ChakraProvider>
-      {children}
+      <LoginModalProvider>{children}</LoginModalProvider>
     </ChakraProvider>
-  )
-}
+  );
+};

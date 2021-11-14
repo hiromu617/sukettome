@@ -4,6 +4,7 @@ import { Image } from '@chakra-ui/image';
 import Link from 'next/link';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { DrawerNav } from './DrawerNav';
+import { LoginButton } from '../../features/Auth';
 
 export const Header: VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,14 +25,7 @@ export const Header: VFC = () => {
             <Image src={'logo.png'} w="auto" h="24px" alt="logo" mb="1" />
           </Link>
           <Spacer display={['none', 'block']} />
-          <Button
-            color="white"
-            bg="gray.900"
-            _hover={{ bg: 'gray.500' }}
-            onClick={() => alert('login')}
-          >
-            Login
-          </Button>
+          <LoginButton />
         </Flex>
       </Box>
       <DrawerNav isOpen={isOpen} onClose={onClose} />
