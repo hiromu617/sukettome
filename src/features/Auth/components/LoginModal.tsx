@@ -10,9 +10,12 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useLoginModal } from '..';
+import { useUser } from '../hooks/useUser';
 
 export const LoginModal: VFC = () => {
   const { isOpen, onClose } = useLoginModal();
+  const { session, signOut, signInWithGoogle } = useUser();
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -24,10 +27,9 @@ export const LoginModal: VFC = () => {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
-            Close
+          <Button colorScheme="blue" mr={3} onClick={signInWithGoogle}>
+            Login With Google
           </Button>
-          <Button variant="ghost">Secondary Action</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

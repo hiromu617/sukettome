@@ -1,3 +1,6 @@
+/**
+ * ページ遷移しても変化しない固定のUI
+ */
 import React, { VFC } from 'react';
 import { Container, VStack } from '@chakra-ui/react';
 import { Header } from './Header';
