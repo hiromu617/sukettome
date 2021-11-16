@@ -10,11 +10,11 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useLoginModal } from '..';
-import { useUser } from '../hooks/useUser';
+import { useSession } from '../hooks/useSession';
 
 export const LoginModal: VFC = () => {
   const { isOpen, onClose } = useLoginModal();
-  const { session, signOut, signInWithGoogle } = useUser();
+  const { signInWithGoogle } = useSession();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

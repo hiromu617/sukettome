@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../libs/supabase-client';
+import { Session } from '@supabase/supabase-js'
 
-export const useUser = () => {
-  // Todo:型調べる
-  const [session, setSession] = useState<any>();
+export const useSession = () => {
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
