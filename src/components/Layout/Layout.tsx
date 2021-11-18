@@ -6,21 +6,21 @@ import { Container, VStack } from '@chakra-ui/react';
 import { Header } from './Header';
 import { LoginModal, useSession } from '../../features/Auth';
 import { supabase } from '../../libs/supabase-client';
+import { useCurrentUser } from '../../features/User';
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 export const Layout: VFC<LayoutProps> = ({ children }) => {
-  // todo: contextsで管理
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { currentUser, setCurrentUser } = useCurrentUser();
   const { session } = useSession();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const userid = session?.user?.id;
         const { data, error, status } = await supabase
           .from('users')
@@ -45,7 +45,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     const insertNewUser = async (id: string, user_name: string, avatar_url: string) => {
@@ -63,7 +63,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      <Header loading={loading} currentUser={currentUser}/>
+      <Header loading={loading} />
       <LoginModal />
       <VStack bg="gray.100" minH="100vh">
         <Container h="100%" py="8">

@@ -13,14 +13,15 @@ import Link from 'next/link';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { DrawerNav } from './DrawerNav';
 import { LoginButton } from '../../features/Auth';
+import { useCurrentUser } from '../../features/User';
 
 type HeaderProps = {
   loading: boolean;
-  currentUser: any;
 };
 
-export const Header: VFC<HeaderProps> = ({ loading, currentUser }) => {
+export const Header: VFC<HeaderProps> = ({ loading }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { currentUser } = useCurrentUser();
   return (
     <>
       <Box h="60px" bg="white" shadow="md" zIndex="banner" pos="sticky" top="0" w="100%">
@@ -40,7 +41,7 @@ export const Header: VFC<HeaderProps> = ({ loading, currentUser }) => {
           <Spacer display={['none', 'block']} />
           {loading && <SkeletonCircle size="10" />}
           {!loading && currentUser && (
-            <Avatar name={currentUser.name} src={currentUser.avatar_url} />
+            <Avatar name={currentUser.user_name} src={currentUser.avatar_url} />
           )}
           {!loading && !currentUser && <LoginButton />}
         </Flex>

@@ -4,6 +4,7 @@
 import React, { VFC } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { LoginModalProvider } from '../features/Auth';
+import { CurrentUserProvider } from '../features/User';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -12,7 +13,9 @@ type AppProviderProps = {
 export const AppProvider: VFC<AppProviderProps> = ({ children }) => {
   return (
     <ChakraProvider>
-      <LoginModalProvider>{children}</LoginModalProvider>
+      <CurrentUserProvider>
+        <LoginModalProvider>{children}</LoginModalProvider>
+      </CurrentUserProvider>
     </ChakraProvider>
   );
 };
