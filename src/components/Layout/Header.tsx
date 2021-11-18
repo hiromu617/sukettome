@@ -1,12 +1,25 @@
 import React, { VFC } from 'react';
-import { Box, Flex, Button, IconButton, Spacer, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Avatar,
+  IconButton,
+  Spacer,
+  useDisclosure,
+  SkeletonCircle,
+} from '@chakra-ui/react';
 import { Image } from '@chakra-ui/image';
 import Link from 'next/link';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { DrawerNav } from './DrawerNav';
 import { LoginButton } from '../../features/Auth';
 
-export const Header: VFC = () => {
+type HeaderProps = {
+  loading: boolean;
+  currentUser: any;
+};
+
+export const Header: VFC<HeaderProps> = ({ loading, currentUser }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -25,7 +38,11 @@ export const Header: VFC = () => {
             <Image src={'logo.png'} w="auto" h="24px" alt="logo" mb="1" />
           </Link>
           <Spacer display={['none', 'block']} />
-          <LoginButton />
+          {loading && <SkeletonCircle size="10" />}
+          {!loading && currentUser && (
+            <Avatar name={currentUser.name} src={currentUser.avatar_url} />
+          )}
+          {!loading && !currentUser && <LoginButton />}
         </Flex>
       </Box>
       <DrawerNav isOpen={isOpen} onClose={onClose} />

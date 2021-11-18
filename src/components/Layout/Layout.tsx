@@ -63,7 +63,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      <Header />
+      <Header loading={loading} currentUser={currentUser}/>
       <LoginModal />
       <VStack bg="gray.100" minH="100vh">
         <Container h="100%" py="8">
