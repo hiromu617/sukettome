@@ -2,17 +2,14 @@ import type { NextPage, GetServerSideProps } from 'next';
 import { Box } from '@chakra-ui/layout';
 import { supabase } from '../../src/libs/supabase-client';
 import type { User } from '../../src/features/User';
+import { UserInfo } from '../../src/features/User';
 
 type UserIdProps = {
   User: User;
 };
 
 const UserId: NextPage<UserIdProps> = ({ User }) => {
-  return (
-    <Box bg="red.500">
-      <h1>{User.user_name}</h1>
-    </Box>
-  );
+  return <UserInfo User={User} />;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
