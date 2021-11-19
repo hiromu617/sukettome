@@ -10,6 +10,7 @@ import {
   DrawerCloseButton,
 } from '@chakra-ui/react';
 import { useSession } from '../../features/Auth';
+import { useShowToast } from '../../hooks/useShowToast';
 
 type DrawerNavProps = {
   isOpen: boolean;
@@ -18,6 +19,13 @@ type DrawerNavProps = {
 
 export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
   const { signOut } = useSession();
+  const { showToast } = useShowToast();
+
+  const handleSignOut = () => {
+    signOut();
+    onClose();
+    showToast('ログアウトしました', '', 'success');
+  };
   return (
     <>
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
@@ -27,7 +35,7 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
           <DrawerHeader>Create your account</DrawerHeader>
 
           <DrawerBody>
-            <Button onClick={signOut}>Sign Out</Button>
+            <Button onClick={handleSignOut}>Sign Out</Button>
           </DrawerBody>
 
           <DrawerFooter>

@@ -6,6 +6,7 @@ import { Container, VStack } from '@chakra-ui/react';
 import { Header } from './Header';
 import { LoginModal, useSession } from '../../features/Auth';
 import { useGetCurrentUser } from '../../features/User';
+import { useShowToast } from '../../hooks/useShowToast';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
   const { session } = useSession();
   const [loading, setLoading] = useState(false);
   const { getCurrentUser } = useGetCurrentUser();
+  const { showToast } = useShowToast();
 
   useEffect(() => {
     const handleGetCurrnetUser = async () => {
@@ -29,6 +31,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
         console.log(error);
       } finally {
         setLoading(false);
+        showToast('ログインしました', '', 'success');
       }
     };
     if (session) {

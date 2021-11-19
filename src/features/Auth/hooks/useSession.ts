@@ -6,6 +6,7 @@ import { useCurrentUser } from '../../User';
 export const useSession = () => {
   const [session, setSession] = useState<Session | null>(null);
   const { setCurrentUser } = useCurrentUser();
+
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       console.log(session);
