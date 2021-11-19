@@ -8,7 +8,7 @@ import {
   useDisclosure,
   SkeletonCircle,
 } from '@chakra-ui/react';
-import { Image } from '@chakra-ui/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { DrawerNav } from './DrawerNav';
@@ -36,12 +36,16 @@ export const Header: VFC<HeaderProps> = ({ loading }) => {
             onClick={onOpen}
           />
           <Link href="/" passHref>
-            <Image src={'logo.png'} w="auto" h="24px" alt="logo" mb="1" />
+            <Box h="24px">
+              <Image src={'/logo.png'} layout="fixed" height="24" width="91" alt="logo" />
+            </Box>
           </Link>
           <Spacer display={['none', 'block']} />
           {loading && <SkeletonCircle size="10" />}
           {!loading && currentUser && (
-            <Avatar name={currentUser.user_name} src={currentUser.avatar_url} />
+            <Link href={`/user/${currentUser.id}`} passHref>
+              <Avatar name={currentUser.user_name} src={currentUser.avatar_url} />
+            </Link>
           )}
           {!loading && !currentUser && <LoginButton />}
         </Flex>
