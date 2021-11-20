@@ -44,7 +44,7 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
       <Header loading={loading} />
       <LoginModal />
       <VStack bg="gray.100" minH="100vh">
-        <Container h="100%" py="8">
+        <Container h="100%" py="8" maxW="container.md">
           {children}
         </Container>
       </VStack>

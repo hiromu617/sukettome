@@ -19,7 +19,7 @@ export const LoginModal: VFC = () => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent mx="4">
         <ModalHeader>Login</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

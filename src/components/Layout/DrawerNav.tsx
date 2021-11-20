@@ -34,7 +34,7 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
   };
   return (
     <>
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="xs">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
