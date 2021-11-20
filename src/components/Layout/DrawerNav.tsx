@@ -10,17 +10,25 @@ import {
   Flex,
   Icon,
   Text,
+  IconButton,
 } from '@chakra-ui/react';
 import { useSession } from '../../features/Auth';
 import { useShowToast } from '../../hooks/useShowToast';
 import Link from 'next/link';
-import { FcSettings, FcPrivacy, FcViewDetails } from 'react-icons/fc';
+import { FcSettings, FcPrivacy, FcViewDetails, FcHome } from 'react-icons/fc';
 import { useCurrentUser } from '../../features/User';
 
 type DrawerNavProps = {
   isOpen: boolean;
   onClose: () => void;
 };
+
+const Links = [
+  { title: 'ホーム', route: '/', icon: FcHome },
+  { title: '利用規約', route: '/terms', icon: FcViewDetails },
+  { title: 'プライバシーポリシー', route: '/policy', icon: FcPrivacy },
+  { title: '設定', route: '/setteings/profile', icon: FcSettings },
+];
 
 export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
   const { signOut } = useSession();
@@ -41,32 +49,20 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
 
           <DrawerBody pt={10}>
             <Stack spacing={4}>
-              {currentUser && (
-                <Link href="/setteings/profile" passHref>
-                  <Flex alignItems="center">
-                    <Icon as={FcSettings} w={6} h={6} mr="2" />
-                    <Text size="md" color="gray.600">
-                      プロフィール設定
-                    </Text>
-                  </Flex>
-                </Link>
-              )}
-              <Link href="/terms" passHref>
-                <Flex alignItems="center">
-                  <Icon as={FcViewDetails} w={6} h={6} mr="2" />
-                  <Text size="md" color="gray.600">
-                    利用規約
-                  </Text>
-                </Flex>
-              </Link>
-              <Link href="/pollicy" passHref>
-                <Flex alignItems="center">
-                  <Icon as={FcPrivacy} w={6} h={6} mr="2" />
-                  <Text size="md" color="gray.600">
-                    プライバシーポリシー
-                  </Text>
-                </Flex>
-              </Link>
+              {Links.map((LinkItem) => {
+                return (
+                  <Link href={LinkItem.route} passHref key={LinkItem.title}>
+                    <Button
+                    justifyContent="start"
+                      leftIcon={<Icon as={LinkItem.icon} w={6} h={6} />}
+                      colorScheme="black"
+                      variant="link"
+                    >
+                      {LinkItem.title}
+                    </Button>
+                  </Link>
+                );
+              })}
               {currentUser && <Button onClick={handleSignOut}>Sign Out</Button>}
             </Stack>
           </DrawerBody>
