@@ -3,6 +3,7 @@ import type { User } from '../index';
 import { Box, Flex, Avatar, HStack, Center, Heading, Text, Button } from '@chakra-ui/react';
 import { useCurrentUser } from '../';
 import Link from 'next/link';
+import { SkatingHistoryConst } from '..';
 
 type UserInfoProps = {
   User: User;
@@ -36,7 +37,7 @@ export const UserInfo: VFC<UserInfoProps> = ({ User }) => {
             性別: {User.sex ? User.sex : '未設定'}{' '}
           </Text>
           <Text color="gray.600" fontSize="sm">
-            skate歴: {User.skating_history ? User.skating_history : '未設定'}{' '}
+            skate歴: {typeof User.skating_history === "number" && SkatingHistoryConst[User.skating_history]! ? SkatingHistoryConst[User.skating_history] : '未設定'}{' '}
           </Text>
         </HStack>
       </Box>

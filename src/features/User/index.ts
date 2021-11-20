@@ -5,6 +5,7 @@ import { useInsertNewUser } from './hooks/useInsertNewUser';
 import { UserInfo } from './components/UserInfo';
 import { UserSettingProfile } from './components/UserSettingProfile';
 import { useUpdateUser } from './hooks/useUpdateUser';
+import { SkatingHistoryConst } from './const/skating_history';
 
 export type { User };
 export {
@@ -14,5 +15,6 @@ export {
   useInsertNewUser,
   UserInfo,
   UserSettingProfile,
-  useUpdateUser
+  useUpdateUser,
+  SkatingHistoryConst,
 };
