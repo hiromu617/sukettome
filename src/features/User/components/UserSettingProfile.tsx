@@ -14,10 +14,9 @@ import {
   Select,
   Icon,
 } from '@chakra-ui/react';
-import { useCurrentUser } from '../';
+import { useCurrentUser, AvatarUpload, useUpdateUser } from '../';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { ErrorMessage } from '../../../components/Form/ErrorMessage';
-import { useUpdateUser } from '../';
 import { useShowToast } from '../../../hooks/useShowToast';
 import { useRouter } from 'next/router';
 
@@ -32,6 +31,7 @@ export const UserSettingProfile: VFC = () => {
   const { currentUser } = useCurrentUser();
   const { updateUser } = useUpdateUser();
   const { showToast } = useShowToast();
+
   const {
     control,
     handleSubmit,
@@ -68,8 +68,7 @@ export const UserSettingProfile: VFC = () => {
       <Divider />
       <Flex alignItems="base" pt={4}>
         <Stack>
-          <Avatar name={currentUser.user_name} src={currentUser.avatar_url} size="xl" />
-          <Button size="sm">変更</Button>
+          <AvatarUpload currentUser={currentUser} />
         </Stack>
         <Box h="full" flex="1" px={6}>
           <Stack spacing="6">
