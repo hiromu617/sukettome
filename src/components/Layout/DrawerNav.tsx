@@ -3,14 +3,19 @@ import {
   Button,
   Drawer,
   DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  Stack,
+  Flex,
+  Icon,
+  Text,
 } from '@chakra-ui/react';
 import { useSession } from '../../features/Auth';
 import { useShowToast } from '../../hooks/useShowToast';
+import Link from 'next/link';
+import { FcSettings, FcPrivacy, FcViewDetails } from 'react-icons/fc';
+import { useCurrentUser } from '../../features/User';
 
 type DrawerNavProps = {
   isOpen: boolean;
@@ -20,6 +25,7 @@ type DrawerNavProps = {
 export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
   const { signOut } = useSession();
   const { showToast } = useShowToast();
+  const { currentUser } = useCurrentUser();
 
   const handleSignOut = () => {
     signOut();
@@ -32,18 +38,38 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
 
-          <DrawerBody>
-            <Button onClick={handleSignOut}>Sign Out</Button>
+          <DrawerBody pt={10}>
+            <Stack spacing={4}>
+              {currentUser && (
+                <Link href="/setteings/profile" passHref>
+                  <Flex alignItems="center">
+                    <Icon as={FcSettings} w={6} h={6} mr="2" />
+                    <Text size="md" color="gray.600">
+                      プロフィール設定
+                    </Text>
+                  </Flex>
+                </Link>
+              )}
+              <Link href="/terms" passHref>
+                <Flex alignItems="center">
+                  <Icon as={FcViewDetails} w={6} h={6} mr="2" />
+                  <Text size="md" color="gray.600">
+                    利用規約
+                  </Text>
+                </Flex>
+              </Link>
+              <Link href="/pollicy" passHref>
+                <Flex alignItems="center">
+                  <Icon as={FcPrivacy} w={6} h={6} mr="2" />
+                  <Text size="md" color="gray.600">
+                    プライバシーポリシー
+                  </Text>
+                </Flex>
+              </Link>
+              {currentUser && <Button onClick={handleSignOut}>Sign Out</Button>}
+            </Stack>
           </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

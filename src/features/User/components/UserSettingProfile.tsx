@@ -1,23 +1,25 @@
-import { VFC } from 'react';
-import type { User } from '../index';
+import { VFC, useEffect } from 'react';
+import { FcSettings } from 'react-icons/fc';
 import {
   Box,
   Flex,
   Avatar,
   Stack,
-  Center,
+  Divider,
   Heading,
   Text,
   Button,
   Input,
   Textarea,
   Select,
+  Icon,
 } from '@chakra-ui/react';
 import { useCurrentUser } from '../';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { ErrorMessage } from '../../../components/Form/ErrorMessage';
 import { useUpdateUser } from '../';
 import { useShowToast } from '../../../hooks/useShowToast';
+import { useRouter } from 'next/router';
 
 type UserForm = {
   user_name: string;
@@ -35,29 +37,36 @@ export const UserSettingProfile: VFC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<UserForm>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!currentUser) router.push('/');
+  }, [router, currentUser]);
 
   const onSubmit: SubmitHandler<UserForm> = (data) => {
-    try{
+    try {
       if (!currentUser) return;
       updateUser(currentUser.id, data);
       showToast('ユーザー情報を更新しました', '', 'success');
-    }catch (e) {
-      console.error(e)
+    } catch (e) {
+      console.error(e);
     }
   };
 
   if (!currentUser) {
-    return <div>error</div>;
+    return <p>loading...</p>;
   }
 
   return (
     <Box bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
-      <Box pb={6} px={2}>
-        <Heading size="md" color="gray.700">
+      <Flex pb={4} px={2} alignItems="center">
+        <Icon as={FcSettings} w={7} h={7} mr="2" />
+        <Heading size="md" color="gray.600">
           プロフィール設定
         </Heading>
-      </Box>
-      <Flex alignItems="base">
+      </Flex>
+      <Divider />
+      <Flex alignItems="base" pt={4}>
         <Stack>
           <Avatar name={currentUser.user_name} src={currentUser.avatar_url} size="xl" />
           <Button size="sm">変更</Button>
