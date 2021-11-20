@@ -27,11 +27,11 @@ export const Layout: VFC<LayoutProps> = ({ children }) => {
           throw 'userid not found';
         }
         getCurrentUser(userid, session);
+        showToast('ログインしました', '', 'success');
       } catch (error) {
         console.log(error);
       } finally {
         setLoading(false);
-        showToast('ログインしました', '', 'success');
       }
     };
     if (session) {

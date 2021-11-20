@@ -4,6 +4,6 @@ export type User = {
   bio?: string;
   sex?: string;
   avatar_url?: string;
-  skating_history?: string;
+  skating_history?: number;
   created_at: string;
 };
