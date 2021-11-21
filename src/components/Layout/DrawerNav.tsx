@@ -53,7 +53,7 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
                 return (
                   <Link href={LinkItem.route} passHref key={LinkItem.title}>
                     <Button
-                    justifyContent="start"
+                      justifyContent="start"
                       leftIcon={<Icon as={LinkItem.icon} w={6} h={6} />}
                       colorScheme="black"
                       variant="link"
@@ -64,6 +64,18 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
                   </Link>
                 );
               })}
+              {currentUser?.id === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
+                <Link href={'/admin'} passHref>
+                  <Button
+                    justifyContent="start"
+                    colorScheme="black"
+                    variant="link"
+                    onClick={onClose}
+                  >
+                    Admin
+                  </Button>
+                </Link>
+              )}
               {currentUser && <Button onClick={handleSignOut}>Sign Out</Button>}
             </Stack>
           </DrawerBody>
