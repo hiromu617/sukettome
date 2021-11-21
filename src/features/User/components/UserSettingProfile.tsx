@@ -70,7 +70,7 @@ export const UserSettingProfile: VFC = () => {
         <Stack>
           <AvatarUpload currentUser={currentUser} />
         </Stack>
-        <Box h="full" flex="1" px={6}>
+        <Box h="full" flex="1">
           <Stack spacing="6">
             <Box>
               <Text mb={2}>ユーザー名</Text>

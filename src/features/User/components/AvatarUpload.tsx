@@ -74,6 +74,7 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
         style={{
           visibility: 'hidden',
           position: 'absolute',
+          width: '100px',
         }}
         type="file"
         id="single"
