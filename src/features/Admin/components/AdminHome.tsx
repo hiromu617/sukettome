@@ -30,6 +30,7 @@ type ProductForm = {
   type: string;
   price: number;
   image_urls: { url: string }[];
+  brand_id: number;
 };
 
 export const AdminHome: VFC = () => {
@@ -60,7 +61,8 @@ export const AdminHome: VFC = () => {
         data.detail,
         data.type,
         data.price,
-        data.image_urls.map((val) => val.url)
+        data.image_urls.map((val) => val.url),
+        data.brand_id,
       );
       showToast('商品を登録しました', '', 'success')
     } catch (e) {
@@ -142,6 +144,19 @@ export const AdminHome: VFC = () => {
                   <option value="ウィール">ウィール</option>
                   <option value="ベアリング">ベアリング</option>
                   <option value="デッキテープ">デッキテープ</option>
+                </Select>
+              )}
+            />
+          </Box>
+          {/* tod: 動的に取得 */}
+          <Box>
+            <Text mb={2}>ブランド</Text>
+            <Controller
+              name="brand_id"
+              control={control}
+              render={({ field }) => (
+                <Select {...field}>
+                  <option value="1">venture</option>
                 </Select>
               )}
             />
