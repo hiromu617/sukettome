@@ -57,6 +57,7 @@ export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
                       leftIcon={<Icon as={LinkItem.icon} w={6} h={6} />}
                       colorScheme="black"
                       variant="link"
+                      onClick={onClose}
                     >
                       {LinkItem.title}
                     </Button>

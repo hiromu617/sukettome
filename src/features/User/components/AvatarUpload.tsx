@@ -1,9 +1,5 @@
 import { VFC, useState } from 'react';
-import {
-  Avatar,
-  Box,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, Text, Spinner, Box } from '@chakra-ui/react';
 import { User, useUpdateUserAvatarUrl } from '..';
 import { supabase } from '../../../libs/supabase-client';
 import { useShowToast } from '../../../hooks/useShowToast';
@@ -55,7 +51,7 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
 
       if (publicURL) {
         updateUserAvatarUrl(currentUser.id, publicURL);
-        showToast('プロフィール画像を更新しました', '', 'success')
+        showToast('プロフィール画像を更新しました', '', 'success');
       }
     } catch (e) {
       console.error(e);
@@ -65,7 +61,15 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
   return (
     <>
       <Avatar name={currentUser.user_name} src={currentUser.avatar_url} size="xl" />
-      <Text as="label" htmlFor="single" textAlign="center" color="blue.500" fontWeight="bold">変更</Text>
+      {uploading ? (
+        <Box textAlign="center">
+          <Spinner />
+        </Box>
+      ) : (
+        <Text as="label" htmlFor="single" textAlign="center" color="blue.500" fontWeight="bold">
+          変更
+        </Text>
+      )}
       <input
         style={{
           visibility: 'hidden',
