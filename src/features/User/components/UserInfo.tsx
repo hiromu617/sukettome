@@ -34,10 +34,10 @@ export const UserInfo: VFC<UserInfoProps> = ({ User }) => {
         </Box>
         <HStack spacing="6">
           <Text color="gray.600" fontSize="sm">
-            性別: {User.sex ? User.sex : '未設定'}
+            性別 <span style={{fontWeight: 'bold'}}>{User.sex ? User.sex : '未設定'}</span>
           </Text>
           <Text color="gray.600" fontSize="sm">
-            skate歴: {typeof User.skating_history === "number" && SkatingHistoryConst[User.skating_history]! ? SkatingHistoryConst[User.skating_history] : '未設定'}{' '}
+            skate歴 <span style={{fontWeight: 'bold'}}>{typeof User.skating_history === "number" && SkatingHistoryConst[User.skating_history]! ? SkatingHistoryConst[User.skating_history] : '未設定'}</span>
           </Text>
         </HStack>
       </Box>
