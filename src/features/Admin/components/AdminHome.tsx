@@ -157,6 +157,8 @@ export const AdminHome: VFC = () => {
               render={({ field }) => (
                 <Select {...field}>
                   <option value="1">venture</option>
+                  <option value="2">bones</option>
+                  <option value="3">spit fire</option>
                 </Select>
               )}
             />

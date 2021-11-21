@@ -1,3 +1,5 @@
+import { Brand } from '../../Brand';
+
 export type Product = {
   id: number;
   created_at: string;
@@ -10,4 +12,5 @@ export type Product = {
   image_urls: string[];
   price: number;
   brand_id: number;
+  brands?: Brand;
 };
