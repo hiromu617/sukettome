@@ -3,6 +3,7 @@ import { Avatar, Text, Spinner, Box } from '@chakra-ui/react';
 import { User, useUpdateUserAvatarUrl } from '..';
 import { supabase } from '../../../libs/supabase-client';
 import { useShowToast } from '../../../hooks/useShowToast';
+import Resizer from 'react-image-file-resizer';
 
 type AvatarUploadProps = {
   currentUser: User;
@@ -20,7 +21,7 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error('You must select an image to upload.');
       }
-      const file = event.target.files[0];
+      const file = await resizeFile(event.target.files[0])
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
@@ -39,6 +40,23 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
     } finally {
       setUploading(false);
     }
+  };
+
+  const resizeFile = (file: File): Promise<File> => {
+    return new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        150,
+        150,
+        'JPEG',
+        30,
+        0,
+        (file) => {
+          resolve(file as File);
+        },
+        'file'
+      );
+    });
   };
 
   const onUpload = async (filePath: string) => {
