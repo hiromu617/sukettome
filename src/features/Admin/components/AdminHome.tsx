@@ -13,18 +13,23 @@ import {
   Textarea,
   Select,
   Icon,
+  NumberInput,
+  NumberInputField,
 } from '@chakra-ui/react';
 import { useCurrentUser, AvatarUpload, useUpdateUser } from '../../User';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler, useFieldArray } from 'react-hook-form';
 import { ErrorMessage } from '../../../components/Form/ErrorMessage';
 import { useShowToast } from '../../../hooks/useShowToast';
 import { useRouter } from 'next/router';
+import { useInsertProduct } from '../../Product';
 
 type ProductForm = {
   name: string;
   product_link: string;
   detail: string;
   type: string;
+  price: number;
+  image_urls: { url: string }[];
 };
 
 export const AdminHome: VFC = () => {
@@ -36,6 +41,11 @@ export const AdminHome: VFC = () => {
     formState: { errors, isSubmitting },
   } = useForm<ProductForm>();
   const router = useRouter();
+  const { insertProduct } = useInsertProduct();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'image_urls',
+  });
 
   useEffect(() => {
     if (currentUser?.id !== process.env.NEXT_PUBLIC_ADMIN_USER_ID) router.push('/');
@@ -44,16 +54,26 @@ export const AdminHome: VFC = () => {
   const onSubmit: SubmitHandler<ProductForm> = (data) => {
     try {
       console.log(data);
+      insertProduct(
+        data.name,
+        data.product_link,
+        data.detail,
+        data.type,
+        data.price,
+        data.image_urls.map((val) => val.url)
+      );
+      showToast('商品を登録しました', '', 'success')
     } catch (e) {
-      console.error(e);
+      showToast(String(e), '', 'error')
     }
   };
+
   return (
     <Box bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
       <Flex pb={4} px={2} alignItems="center">
         <Icon as={FcSettings} w={7} h={7} mr="2" />
         <Heading size="md" color="gray.600">
-          Admin
+          Admin/products
         </Heading>
       </Flex>
       <Divider />
@@ -64,7 +84,7 @@ export const AdminHome: VFC = () => {
             <Controller
               name="name"
               control={control}
-              rules={{ required: true, maxLength: 20 }}
+              rules={{ required: true }}
               render={({ field }) => (
                 <Input
                   mb={3}
@@ -81,7 +101,7 @@ export const AdminHome: VFC = () => {
             <Controller
               name="product_link"
               control={control}
-              rules={{ required: true, maxLength: 20 }}
+              rules={{ required: true }}
               render={({ field }) => (
                 <Input
                   mb={3}
@@ -92,7 +112,6 @@ export const AdminHome: VFC = () => {
                 />
               )}
             />
-
           </Box>
           <Box>
             <Text mb={2}>商品詳細</Text>
@@ -104,6 +123,7 @@ export const AdminHome: VFC = () => {
                 <Textarea
                   {...field}
                   mb={3}
+                  rules={{ required: true }}
                   isInvalid={!!errors?.detail}
                   placeholder="よろしくお願いします"
                 />
@@ -125,6 +145,37 @@ export const AdminHome: VFC = () => {
                 </Select>
               )}
             />
+          </Box>
+          <Box>
+            <Text mb={2}>参考価格</Text>
+            <Controller
+              name="price"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <NumberInput mb={3} isRequired isInvalid={!!errors?.product_link} {...field}>
+                  <NumberInputField />
+                </NumberInput>
+              )}
+            />
+          </Box>
+          <Box>
+            <Text mb={2}>画像URL</Text>
+            {fields.map((field, index) => {
+              return (
+                <Flex key={index}>
+                  <Controller
+                    name={`image_urls.${index}.url`}
+                    control={control}
+                    render={({ field }) => <Input mb={3} isRequired placeholder="url" {...field} />}
+                  />
+                  <Button colorScheme="red" onClick={() => remove(index)}>
+                    削除
+                  </Button>
+                </Flex>
+              );
+            })}
+            <Button onClick={() => append({ url: '' })}>追加</Button>
           </Box>
           <Button
             onClick={handleSubmit(onSubmit)}
