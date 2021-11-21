@@ -27,7 +27,7 @@ const Links = [
   { title: 'ホーム', route: '/', icon: FcHome },
   { title: '利用規約', route: '/terms', icon: FcViewDetails },
   { title: 'プライバシーポリシー', route: '/policy', icon: FcPrivacy },
-  { title: '設定', route: '/setteings/profile', icon: FcSettings },
+  { title: '設定', route: '/settings/profile', icon: FcSettings },
 ];
 
 export const DrawerNav: VFC<DrawerNavProps> = ({ isOpen, onClose }) => {
