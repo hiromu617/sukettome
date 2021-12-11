@@ -38,38 +38,53 @@ function Rating({ rating }: RatingProps) {
 
 export const ProductCard: VFC<Props> = ({ product }) => {
   return (
-    <Box key={product.id} bg="white" shadow="lg" borderRadius="lg" w="300px">
-      <Box w="full" height="200px" borderRadiusTop="lg">
-        <Img
-          src={product.image_urls[0]}
-          borderTopRadius="lg"
-          alt={product.name}
-          objectFit="cover"
-          boxSize="200px"
-          margin="auto"
-        />
-      </Box>
-      <Stack p={[2, 5]}>
-        <Box d="flex" alignItems="baseline">
-          <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="blackAlpha">
-            {product.type}
-          </Badge>
+    <Link href={`products/${product.id}`} passHref>
+      <Box
+        bg="white"
+        shadow="lg"
+        borderRadius="lg"
+        w="300px"
+        cursor="pointer"
+        _hover={{ shadow: 'xl' }}
+      >
+        <Box w="full" height="200px" borderRadiusTop="lg">
+          <Img
+            src={product.image_urls[0]}
+            borderTopRadius="lg"
+            alt={product.name}
+            objectFit="cover"
+            boxSize="200px"
+            margin="auto"
+          />
         </Box>
-        <Flex h="36px" alignItems="center">
-          <Heading size={'sm'} color="gray.600">
-            {product.name}
-          </Heading>
-        </Flex>
-        <Text size="sm" color="gray.500">
-          {product.brands?.name}
-        </Text>
-        <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
-          <Rating rating={product.rate ? product.rate : 0} />
-          <Text fontSize="xl" color={'gray.800'} whiteSpace="nowrap">
-            {product.price.toLocaleString()}円
+        <Stack p={[2, 5]}>
+          <Box d="flex" alignItems="baseline">
+            <Badge
+              rounded="full"
+              px="2"
+              fontSize="0.8em"
+              colorScheme="blackAlpha"
+              _hover={{ opacity: '0.5' }}
+            >
+              {product.type}
+            </Badge>
+          </Box>
+          <Flex h="36px" alignItems="center">
+            <Heading size={'sm'} color="gray.600">
+              {product.name}
+            </Heading>
+          </Flex>
+          <Text size="sm" color="gray.500" _hover={{ textDecoration: 'underline' }}>
+            {product.brands?.name}
           </Text>
-        </Flex>
-      </Stack>
-    </Box>
+          <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
+            <Rating rating={product.rate ? product.rate : 0} />
+            <Text fontSize="xl" color={'gray.800'} whiteSpace="nowrap">
+              {product.price.toLocaleString()}円
+            </Text>
+          </Flex>
+        </Stack>
+      </Box>
+    </Link>
   );
 };
