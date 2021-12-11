@@ -3,22 +3,11 @@ import { supabase } from '../src/libs/supabase-client';
 import type { Product } from '../src/features/Product';
 import {
   Box,
-  Text,
-  Flex,
-  Avatar,
-  IconButton,
-  Spacer,
-  useDisclosure,
-  SkeletonCircle,
-  Badge,
   Icon,
-  Stack,
-  Heading,
   HStack,
-  Img,
 } from '@chakra-ui/react';
-import Link from 'next/link';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
+import { ProductCard } from '../src/features/Product';
 
 type Props = {
   Products: Product[];
@@ -55,35 +44,8 @@ function Rating({ rating }: RatingProps) {
 const Home: NextPage<Props> = ({ Products }) => {
   return (
     <HStack spacing={[4, 8]} overflowX="auto">
-      {Products.map((product) => {
-        return (
-          <Box key={product.id} bg="white" shadow="lg" borderRadius="lg" w="300px">
-            <Box w="full" height="200px" borderRadiusTop="lg">
-              <Img src={product.image_urls[0]} fit="cover" borderTopRadius="lg"/>
-            </Box>
-            <Stack p={[2, 5]}>
-              <Box d="flex" alignItems="baseline">
-                <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="blackAlpha">
-                  {product.type}
-                </Badge>
-              </Box>
-              <Flex h="36px" alignItems="center">
-                <Heading size={'sm'} color="gray.600">
-                  {product.name}
-                </Heading>
-              </Flex>
-              <Text size="sm" color="gray.500">
-                {product.brands?.name}
-              </Text>
-              <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
-                <Rating rating={4.2} />
-                <Text fontSize="xl" color={'gray.800'} whiteSpace="nowrap">
-                  {product.price}円
-                </Text>
-              </Flex>
-            </Stack>
-          </Box>
-        );
+      {Products.map((product, i) => {
+        return <ProductCard key={product.id} product={product}/>;
       })}
     </HStack>
   );
