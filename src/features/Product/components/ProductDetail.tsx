@@ -16,6 +16,8 @@ import {
   Divider,
 } from '@chakra-ui/react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { StarIcon } from '@chakra-ui/icons';
+import Rating from 'react-rating';
 
 type Props = {
   product: Product;
@@ -24,7 +26,7 @@ type Props = {
 export const ProductDetail: VFC<Props> = ({ product }) => {
   return (
     <VStack bg="white" shadow="lg" borderRadius="lg" w="full" p={5}>
-      <SimpleGrid columns={2} w="full" spacing={10}>
+      <SimpleGrid columns={[1, 2]} w="full" spacing={10}>
         <Box>
           <Img
             src={product.image_urls[0]}
@@ -51,6 +53,12 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
           <Text size="xl" color="gray.500" _hover={{ textDecoration: 'underline' }}>
             {product.brands?.name}
           </Text>
+          <Rating
+            initialRating={4.5}
+            readonly
+            emptySymbol={<StarIcon boxSize={7} color="gray.100" />}
+            fullSymbol={<StarIcon boxSize={7} color="yellow.300" />}
+          />
           <Text textAlign="right" fontSize="2xl" color={'gray.800'} whiteSpace="nowrap">
             {product.price.toLocaleString()}円
           </Text>
@@ -81,7 +89,9 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
         <Heading size={'md'} color="gray.600">
           商品詳細
         </Heading>
-        <Text py={5} color="gray.700">{product.detail}</Text>
+        <Text py={5} color="gray.700">
+          {product.detail}
+        </Text>
       </Box>
     </VStack>
   );
