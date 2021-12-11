@@ -14,6 +14,7 @@ import {
   Button,
   VStack,
   Divider,
+  HStack,
 } from '@chakra-ui/react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { StarIcon } from '@chakra-ui/icons';
@@ -26,7 +27,7 @@ type Props = {
 export const ProductDetail: VFC<Props> = ({ product }) => {
   return (
     <VStack bg="white" shadow="lg" borderRadius="lg" w="full" p={5}>
-      <SimpleGrid columns={[1, 2]} w="full" spacing={10}>
+      <SimpleGrid columns={[1, 1, 2]} w="full" spacing={10}>
         <Box>
           <Img
             src={product.image_urls[0]}
@@ -63,7 +64,7 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
             {product.price.toLocaleString()}円
           </Text>
           <Spacer />
-          <Flex justify="space-between" align="center">
+          <HStack m="auto">
             <Button
               as="a"
               colorScheme="red"
@@ -79,9 +80,9 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
               // leftIcon={<Icon as={FcLike} w={6} h={6} />}
               leftIcon={<Icon as={FcLikePlaceholder} w={6} h={6} />}
             >
-              調子イイ(100)
+              調子イイ！(100)
             </Button>
-          </Flex>
+          </HStack>
         </Stack>
       </SimpleGrid>
       <Divider />
