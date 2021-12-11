@@ -1,8 +1,9 @@
 import { VFC, useEffect, useState } from 'react';
-import { Stack, Heading, Divider } from '@chakra-ui/react';
+import { Stack, Heading, Divider, Box, Button, Flex } from '@chakra-ui/react';
 import { supabase } from '../../../libs/supabase-client';
 import type { Review } from '../';
 import { ReviewCard } from '../index';
+import Link from 'next/link';
 
 type ReviewListProps = {
   productId: number;
@@ -36,9 +37,16 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
 
   return (
     <Stack bg="white" shadow="lg" borderRadius="lg" w="full" p={5} divider={<Divider />}>
-      <Heading size={'md'} color="gray.600" textAlign="left" mb={2}>
-        レビュー
-      </Heading>
+      <Flex align="center" justify="space-between">
+        <Heading size={'md'} color="gray.600" textAlign="left" mb={2}>
+          レビュー
+        </Heading>
+        <Link href={`/products/${productId}/reviews/new`} passHref>
+          <Button as="a" color="white" bg="gray.900" _hover={{ bg: 'gray.500' }}>
+            レビューする
+          </Button>
+        </Link>
+      </Flex>
       {reviewList.map((review) => {
         return <ReviewCard review={review} key={review.id} />;
       })}

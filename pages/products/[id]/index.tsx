@@ -1,8 +1,8 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { supabase } from '../../src/libs/supabase-client';
-import type { Product } from '../../src/features/Product';
-import { ProductDetail } from '../../src/features/Product';
-import { ReviewList } from '../../src/features/Review';
+import { supabase } from '../../../src/libs/supabase-client';
+import type { Product } from '../../../src/features/Product';
+import { ProductDetail } from '../../../src/features/Product';
+import { ReviewList } from '../../../src/features/Review';
 import { VStack } from '@chakra-ui/react';
 
 type Props = {
