@@ -6,9 +6,7 @@ import {
   Heading,
   Text,
   Button,
-  Input,
   Textarea,
-  Select,
   Icon,
   VStack,
   Stack,
@@ -17,8 +15,6 @@ import {
   AlertTitle,
   AlertDescription,
   Tag,
-  NumberInput,
-  NumberInputField,
 } from '@chakra-ui/react';
 import { useCurrentUser } from '../../../../src/features/User';
 import { useLoginModal } from '../../../../src/features/Auth';
@@ -29,6 +25,7 @@ import { ErrorMessage } from '../../../../src/components/Form/ErrorMessage';
 import { FcViewDetails } from 'react-icons/fc';
 import Rating from 'react-rating';
 import { StarIcon } from '@chakra-ui/icons';
+import { useInsertReview } from '../../../../src/features/Review';
 
 type ReviewForm = {
   body: string;
@@ -40,10 +37,11 @@ type ReviewFormProps = {
 
 export const ReviewForm: VFC<ReviewFormProps> = ({ productId }) => {
   const { currentUser } = useCurrentUser();
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number>(3);
   const { isOpen, onOpen } = useLoginModal();
   const { showToast } = useShowToast();
   const router = useRouter();
+  const { insertReview } = useInsertReview();
   const {
     control,
     handleSubmit,
@@ -61,8 +59,16 @@ export const ReviewForm: VFC<ReviewFormProps> = ({ productId }) => {
   const onSubmit: SubmitHandler<ReviewForm> = (data) => {
     try {
       console.log(data);
+      if (!currentUser) {
+        showToast('ログインしてください', '', 'warning');
+        return;
+      }
+      insertReview(data.body, rating, productId, currentUser.id);
+      showToast('レビューを投稿しました', '', 'success');
+      router.push(`/products/${productId}`);
     } catch (e) {
       console.error(e);
+      showToast(String(e), '', 'error');
     }
   };
 
