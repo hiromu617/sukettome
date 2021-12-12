@@ -1,7 +1,9 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { supabase } from '../../src/libs/supabase-client';
-import type { Product } from '../../src/features/Product';
-import { ProductDetail } from '../../src/features/Product';
+import { supabase } from '../../../src/libs/supabase-client';
+import type { Product } from '../../../src/features/Product';
+import { ProductDetail } from '../../../src/features/Product';
+import { ReviewList } from '../../../src/features/Review';
+import { VStack } from '@chakra-ui/react';
 
 type Props = {
   product: Product;
@@ -9,9 +11,10 @@ type Props = {
 
 const ProductId: NextPage<Props> = ({ product }) => {
   return (
-    <>
+    <VStack spacing={16}>
       <ProductDetail product={product} />
-    </>
+      <ReviewList productId={product.id}/>
+    </VStack>
   );
 };
 
@@ -31,7 +34,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     )
     .eq('id', id)
     .single();
-  // console.log('data', data);
   if (error && status !== 406) {
     throw error;
   }
