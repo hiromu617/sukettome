@@ -13,6 +13,7 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
   const [reviewList, setReviewList] = useState<Review[]>([]);
   useEffect(() => {
     const fetchReviews = async () => {
+      // product_idが一致するレビューを降順で0~5件取得
       const { data, error, status } = await supabase
         .from('reviews')
         .select(
@@ -23,7 +24,9 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
         )
       `
         )
-        .eq('product_id', productId);
+        .eq('product_id', productId)
+        .order('id', { ascending: true })
+        .range(0, 5);
       if (error && status !== 406) {
         throw error;
       }
