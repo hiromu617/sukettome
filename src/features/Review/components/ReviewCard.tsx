@@ -46,12 +46,19 @@ export const ReviewCard: VFC<ReviewCardProps> = ({ review }) => {
             {format(new Date(review.created_at), 'yyyy/MM/dd HH:mm')}
           </Text>
         </Flex>
-        <Rating
-          initialRating={review.rate}
-          readonly
-          emptySymbol={<StarIcon boxSize={4} color="gray.100" />}
-          fullSymbol={<StarIcon boxSize={4} color="yellow.300" />}
-        />
+        <Flex alignItems="center">
+          <Rating
+            initialRating={review.rate}
+            readonly
+            emptySymbol={<StarIcon boxSize={4} color="gray.100" />}
+            fullSymbol={<StarIcon boxSize={4} color="yellow.300" />}
+          />
+          <Box>
+            <Text ml="2" fontSize="sm" color="gray.500" fontWeight="bold">
+              {review.rate}
+            </Text>
+          </Box>
+        </Flex>
         <Box py={4}>
           <Text>{review.body}</Text>
         </Box>
