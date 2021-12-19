@@ -78,18 +78,20 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
           return <ReviewCard review={review} key={review.id} />;
         });
       })}
-      <Flex align="center" justify="center" mt="2">
-        <Button
-          onClick={() => setSize(size + 1)}
-          as="a"
-          color="white"
-          bg="gray.900"
-          _hover={{ bg: 'gray.500' }}
-          disabled={isLast}
-        >
-          もっと読み込む
-        </Button>
-      </Flex>
+      {!isLast && (
+        <Flex align="center" justify="center" mt="2">
+          <Button
+            onClick={() => setSize(size + 1)}
+            as="a"
+            color="white"
+            bg="gray.900"
+            _hover={{ bg: 'gray.500' }}
+            disabled={isLast}
+          >
+            もっと読み込む
+          </Button>
+        </Flex>
+      )}
     </Stack>
   );
 };
