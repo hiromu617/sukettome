@@ -2,39 +2,12 @@ import { VFC } from 'react';
 import type { Product } from '../';
 import { Box, Text, Flex, Badge, Icon, Stack, Heading, Img } from '@chakra-ui/react';
 import Link from 'next/link';
-import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
+import { StarIcon } from '@chakra-ui/icons';
+import Rating from 'react-rating';
 
 type Props = {
   product: Product;
 };
-
-interface RatingProps {
-  rating: number;
-}
-
-function Rating({ rating }: RatingProps) {
-  return (
-    <Box d="flex" alignItems="center">
-      {Array(5)
-        .fill('')
-        .map((_, i) => {
-          const roundedRating = Math.round(rating * 2) / 2;
-          if (roundedRating - i >= 1) {
-            return (
-              <Icon as={BsStarFill} key={i} ml={1} color={i < rating ? 'yellow.400' : 'gray.300'} />
-            );
-          }
-          if (roundedRating - i === 0.5) {
-            return <Icon as={BsStarHalf} color={'gray.400'} key={i} ml={1} />;
-          }
-          return <Icon as={BsStar} color={'gray.400'} key={i} ml={1} />;
-        })}
-      {/* <Box as="span" ml="2" color="gray.600" fontSize="sm">
-        {numReviews} review{numReviews > 1 && 's'}
-      </Box> */}
-    </Box>
-  );
-}
 
 export const ProductCard: VFC<Props> = ({ product }) => {
   return (
@@ -78,7 +51,12 @@ export const ProductCard: VFC<Props> = ({ product }) => {
             {product.brands?.name}
           </Text>
           <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
-            <Rating rating={product.rate ? product.rate : 0} />
+            <Rating
+              initialRating={product.rate}
+              readonly
+              emptySymbol={<StarIcon boxSize={4} color="gray.100" />}
+              fullSymbol={<StarIcon boxSize={4} color="yellow.300" />}
+            />
             <Text fontSize="xl" color={'gray.800'} whiteSpace="nowrap">
               {product.price.toLocaleString()}円
             </Text>

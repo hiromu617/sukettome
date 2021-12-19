@@ -16,9 +16,6 @@ export const useUpdateRate = () => {
       const rates = data as [{ rate: number }];
       const sum = rates.map((object) => object.rate).reduce((prev, curr) => prev + curr);
       const avelage = (sum + rate) / (rates.length + 1);
-      console.log(data);
-      console.log(sum);
-      console.log(avelage);
       if (avelage > 0) {
         const { data, error, status } = await supabase
           .from('products')
@@ -28,7 +25,6 @@ export const useUpdateRate = () => {
           console.error(error);
           throw error;
         }
-        console.log(data);
       }
     }
   };

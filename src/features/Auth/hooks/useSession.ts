@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../../libs/supabase-client';
 import { Session } from '@supabase/supabase-js';
 import { useCurrentUser } from '../../User';
+import { StarIcon } from '@chakra-ui/icons';
 
 export const useSession = () => {
   const [session, setSession] = useState<Session | null>(null);
