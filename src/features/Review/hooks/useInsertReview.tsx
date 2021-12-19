@@ -1,6 +1,8 @@
 import { supabase } from '../../../libs/supabase-client';
+import { useUpdateRate } from './useUpdateRate';
 
 export const useInsertReview = () => {
+  const { updateRate } = useUpdateRate();
   const insertReview = async (body: string, rate: number, product_id: number, user_id: string) => {
     const { data, error, status } = await supabase.from('reviews').insert([
       {
@@ -17,7 +19,7 @@ export const useInsertReview = () => {
     }
 
     if (data) {
-      console.log(data);
+      updateRate(product_id, rate)
     }
   };
 

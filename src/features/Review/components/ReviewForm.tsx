@@ -47,8 +47,7 @@ export const ReviewForm: VFC<ReviewFormProps> = ({ productId }) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ReviewForm>();
-
-  console.log(router.query.id);
+  
   useEffect(() => {
     if (!currentUser) {
       onOpen();
@@ -58,7 +57,7 @@ export const ReviewForm: VFC<ReviewFormProps> = ({ productId }) => {
 
   const onSubmit: SubmitHandler<ReviewForm> = (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       if (!currentUser) {
         showToast('ログインしてください', '', 'warning');
         return;

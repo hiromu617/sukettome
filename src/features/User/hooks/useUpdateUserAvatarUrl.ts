@@ -20,7 +20,6 @@ export const useUpdateUserAvatarUrl = () => {
     }
 
     if(data){
-      console.log(data)
       setCurrentUser(data[0])
     }
   };

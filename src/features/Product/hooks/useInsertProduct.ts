@@ -38,7 +38,8 @@ export const useInsertProduct = () => {
     }
 
     if (data) {
-      console.log(data);
+      // console.log(data);
+      console.log('success!')
     }
   };
 
