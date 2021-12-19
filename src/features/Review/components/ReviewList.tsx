@@ -1,42 +1,65 @@
-import { VFC, useEffect, useState } from 'react';
-import { Stack, Heading, Divider, Box, Button, Flex } from '@chakra-ui/react';
+import { VFC } from 'react';
+import { Stack, Heading, Divider, Box, Button, Flex, Spinner } from '@chakra-ui/react';
 import { supabase } from '../../../libs/supabase-client';
 import type { Review } from '../';
 import { ReviewCard } from '../index';
 import Link from 'next/link';
+import useSWRInfinite from 'swr/infinite';
 
 type ReviewListProps = {
   productId: number;
 };
 
-export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
-  const [reviewList, setReviewList] = useState<Review[]>([]);
-  useEffect(() => {
-    const fetchReviews = async () => {
-      // product_idが一致するレビューを降順で0~5件取得
-      const { data, error, status } = await supabase
-        .from('reviews')
-        .select(
-          `
-        *,
-        users (
-          *
-        )
+const fetcher = async (productId: number, pageIndex: number) => {
+  // product_idが一致するレビューを降順で0~5件取得
+  const { data, error, status } = await supabase
+    .from('reviews')
+    .select(
       `
-        )
-        .eq('product_id', productId)
-        .order('id', { ascending: true })
-        .range(0, 5);
-      if (error && status !== 406) {
-        throw error;
-      }
-      // console.log(data)
-      if (data) {
-        setReviewList(data);
-      }
-    };
-    fetchReviews();
-  }, [productId]);
+   *,
+   users (
+     *
+   )
+ `
+    )
+    .eq('product_id', productId)
+    .order('id', { ascending: false })
+    .range(pageIndex * 4, pageIndex * 4 + 4);
+  if (error && status !== 406) {
+    throw error;
+  }
+  if (data) {
+    return data;
+  }
+  return [];
+};
+
+export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
+  const getKey = (pageIndex: number, previousPageData: Review[]) => {
+    if (previousPageData && !previousPageData.length) return null; // 最後に到達した
+    return [productId, pageIndex];
+  };
+  const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  const isLast = data ? data.filter((list) => list.length < 5).length > 0 : false;
+
+  if (!data)
+    return (
+      <Stack bg="white" shadow="lg" borderRadius="lg" w="full" p={5} divider={<Divider />}>
+        <Flex align="center" justify="space-between">
+          <Heading size={'md'} color="gray.600" textAlign="left" mb={2}>
+            レビュー
+          </Heading>
+          <Link href={`/products/${productId}/reviews/new`} passHref>
+            <Button as="a" color="white" bg="gray.900" _hover={{ bg: 'gray.500' }}>
+              レビューする
+            </Button>
+          </Link>
+        </Flex>
+        <Flex align="center" justify="center" my="2">
+          <Spinner />
+        </Flex>
+      </Stack>
+    );
 
   return (
     <Stack bg="white" shadow="lg" borderRadius="lg" w="full" p={5} divider={<Divider />}>
@@ -50,9 +73,23 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
           </Button>
         </Link>
       </Flex>
-      {reviewList.map((review) => {
-        return <ReviewCard review={review} key={review.id} />;
+      {data.map((reviewList) => {
+        return reviewList.map((review) => {
+          return <ReviewCard review={review} key={review.id} />;
+        });
       })}
+      <Flex align="center" justify="center" mt="2">
+        <Button
+          onClick={() => setSize(size + 1)}
+          as="a"
+          color="white"
+          bg="gray.900"
+          _hover={{ bg: 'gray.500' }}
+          disabled={isLast}
+        >
+          もっと読み込む
+        </Button>
+      </Flex>
     </Stack>
   );
 };

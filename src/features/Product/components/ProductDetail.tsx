@@ -5,7 +5,6 @@ import {
   Box,
   Text,
   Spacer,
-  Flex,
   Badge,
   Icon,
   Stack,
@@ -55,7 +54,7 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
             {product.brands?.name}
           </Text>
           <Rating
-            initialRating={4.5}
+            initialRating={product.rate}
             readonly
             emptySymbol={<StarIcon boxSize={7} color="gray.100" />}
             fullSymbol={<StarIcon boxSize={7} color="yellow.300" />}

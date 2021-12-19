@@ -20,7 +20,7 @@ export const useGetCurrentUser = () => {
     if (error && status !== 406) {
       throw error;
     }
-    console.log(data);
+    
     if (data) {
       setCurrentUser(data);
     } else {

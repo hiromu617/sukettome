@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       *
     )
   `);
-  console.log('data', data);
+  // console.log('data', data);
   if (error && status !== 406) {
     console.log(error);
     throw error;

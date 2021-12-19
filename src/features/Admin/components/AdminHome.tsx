@@ -54,7 +54,7 @@ export const AdminHome: VFC = () => {
 
   const onSubmit: SubmitHandler<ProductForm> = (data) => {
     try {
-      console.log(data);
+      // console.log(data);
       insertProduct(
         data.name,
         data.product_link,

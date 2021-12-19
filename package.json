@@ -22,7 +22,8 @@
     "react-hook-form": "^7.20.2",
     "react-icons": "^4.3.1",
     "react-image-file-resizer": "^0.4.7",
-    "react-rating": "^2.0.5"
+    "react-rating": "^2.0.5",
+    "swr": "^1.1.2-beta.0"
   },
   "devDependencies": {
     "@types/react": "17.0.34",
