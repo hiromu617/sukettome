@@ -18,6 +18,7 @@ import {
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { StarIcon } from '@chakra-ui/icons';
 import Rating from 'react-rating';
+import { LikeButton } from '../../Like';
 
 type Props = {
   product: Product;
@@ -74,13 +75,7 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
             >
               商品リンク(楽天)
             </Button>
-            <Button
-              size="md"
-              // leftIcon={<Icon as={FcLike} w={6} h={6} />}
-              leftIcon={<Icon as={FcLikePlaceholder} w={6} h={6} />}
-            >
-              調子イイ！(100)
-            </Button>
+            <LikeButton productId={product.id} />
           </HStack>
         </Stack>
       </SimpleGrid>
