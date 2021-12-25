@@ -1,8 +1,8 @@
 import type { NextPage, GetServerSideProps } from 'next';
 import { Stack, Flex, Icon, Heading, Text, Box } from '@chakra-ui/react';
 import { supabase } from '../../src/libs/supabase-client';
-import type { Product } from '../../src/features/Product';
-import { ProductCard } from '../../src/features/Product';
+import { Product } from '../../src/features/Product';
+import { ProductListItem } from '../../src/features/Product';
 import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
@@ -17,12 +17,14 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type }) => {
   return (
     <>
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
-        <Flex px={2} alignItems="center">
-          <Icon as={FcSearch} w={7} h={7} mr="2" />
-          <Heading size="md" color="gray.600">
-            {`${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`}
-          </Heading>
-          <Text ml={4} color="gray.600">{`全${Products.length}件`}</Text>
+        <Flex px={2} alignItems="center" justify="space-between">
+          <Flex alignItems="center">
+            <Icon as={FcSearch} w={7} h={7} mr="2" />
+            <Heading size="md" color="gray.600">
+              {`${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`}
+            </Heading>
+          </Flex>
+          <Text color="gray.600">{`全${Products.length}件`}</Text>
         </Flex>
       </Stack>
       <Box mt={5}>
@@ -33,11 +35,16 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type }) => {
           </Flex>
         </Link>
       </Box>
-      <Flex mt={10} flexWrap="wrap" w="full" justify="space-between">
+      <Stack mt={5} w="full" spacing={4}>
         {Products.map((Product) => {
-          return <ProductCard key={Product.id} product={Product} />;
+          return <ProductListItem key={Product.id} product={Product} />;
         })}
-      </Flex>
+      </Stack>
+      {Products.length <= 0 && (
+        <Box>
+          <Text fontWeight="bold" color="gray.700" fontSize="lg">検索条件に一致する商品はありませんでした。</Text>
+        </Box>
+      )}
     </>
   );
 };
