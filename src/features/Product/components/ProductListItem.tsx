@@ -43,11 +43,11 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
             </Badge>
           </Box>
           <Flex alignItems="center">
-            <Heading size={'sm'} color="gray.600">
+            <Heading fontSize='lg' color="gray.600">
               {product.name}
             </Heading>
           </Flex>
-          <Text size="sm" color="gray.500" _hover={{ textDecoration: 'underline' }}>
+          <Text fontSize="md" color="gray.500" _hover={{ textDecoration: 'underline' }}>
             {product.brands?.name}
           </Text>
           <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
