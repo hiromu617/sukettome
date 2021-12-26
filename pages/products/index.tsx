@@ -17,7 +17,7 @@ type Props = {
   totalCount: number;
 };
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
 const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount }) => {
   const router = useRouter();

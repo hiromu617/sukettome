@@ -1,8 +1,7 @@
 import type { NextPage, GetServerSideProps } from 'next';
 import { supabase } from '../src/libs/supabase-client';
-import type { Product } from '../src/features/Product';
-import { HStack } from '@chakra-ui/react';
-import { ProductCard } from '../src/features/Product';
+import { Product, ProductListItem } from '../src/features/Product';
+import { Stack } from '@chakra-ui/react';
 
 type Props = {
   Products: Product[];
@@ -10,11 +9,11 @@ type Props = {
 
 const Home: NextPage<Props> = ({ Products }) => {
   return (
-    <HStack spacing={[4, 8]} overflowX="auto" py={10}>
+    <Stack spacing={[4, 8]} py={10}>
       {Products.map((product, i) => {
-        return <ProductCard key={product.id} product={product} />;
+        return <ProductListItem key={product.id} product={product} />;
       })}
-    </HStack>
+    </Stack>
   );
 };
 

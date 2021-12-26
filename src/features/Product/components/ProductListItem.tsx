@@ -32,24 +32,34 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
         </Box>
         <Flex p={[2, 5]} flex={1} flexDirection="column" justify="space-between">
           <Box d="flex" alignItems="baseline">
-            <Badge
-              rounded="full"
-              px="2"
-              fontSize="0.8em"
-              colorScheme="blackAlpha"
-              _hover={{ opacity: '0.5' }}
+            <Link
+              href={{
+                pathname: '/products',
+                query: { type: product.type, keyword: ''},
+              }}
+              passHref
             >
-              {product.type}
-            </Badge>
+              <Badge
+                rounded="full"
+                px="2"
+                fontSize="0.8em"
+                colorScheme="blackAlpha"
+                _hover={{ opacity: '0.5' }}
+              >
+                {product.type}
+              </Badge>
+            </Link>
           </Box>
           <Flex alignItems="center">
-            <Heading fontSize='lg' color="gray.600">
+            <Heading fontSize="lg" color="gray.600">
               {product.name}
             </Heading>
           </Flex>
-          <Text fontSize="md" color="gray.500" _hover={{ textDecoration: 'underline' }}>
-            {product.brands?.name}
-          </Text>
+          <Link href={`/brands/${product.brands?.id}`} passHref>
+            <Text fontSize="md" color="gray.500" _hover={{ textDecoration: 'underline' }}>
+              {product.brands?.name}
+            </Text>
+          </Link>
           <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
             <Rating
               initialRating={product.rate}
