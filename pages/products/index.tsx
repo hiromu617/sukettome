@@ -1,19 +1,27 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { Stack, Flex, Icon, Heading, Text, Box } from '@chakra-ui/react';
+import { Stack, Flex, Icon, Heading, Text, Box, Button } from '@chakra-ui/react';
 import { supabase } from '../../src/libs/supabase-client';
 import { Product } from '../../src/features/Product';
 import { ProductListItem } from '../../src/features/Product';
 import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type Props = {
   Products: Product[];
   keyword?: string;
   type?: string;
+  page: number;
+  totalCount: number;
 };
 
-const ProductIndex: NextPage<Props> = ({ Products, keyword, type }) => {
+const PAGE_SIZE = 2;
+
+const range = (start: number, end: number) => [...Array(end - start + 1)].map((_, i) => start + i);
+
+const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount }) => {
+  const router = useRouter();
   return (
     <>
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
@@ -42,9 +50,27 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type }) => {
       </Stack>
       {Products.length <= 0 && (
         <Box>
-          <Text fontWeight="bold" color="gray.700" fontSize="lg">検索条件に一致する商品はありませんでした。</Text>
+          <Text fontWeight="bold" color="gray.700" fontSize="lg">
+            検索条件に一致する商品はありませんでした。
+          </Text>
         </Box>
       )}
+      <ul>
+        {range(1, Math.ceil(totalCount / PAGE_SIZE)).map((number, index) => (
+          <li key={index}>
+            <Button
+              onClick={() =>
+                router.push({
+                  pathname: '/products',
+                  query: { keyword: keyword, type: type, page: number },
+                })
+              }
+            >
+              {number}
+            </Button>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
@@ -54,13 +80,15 @@ export default ProductIndex;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const keyword = context.query.keyword;
   const type = context.query.type;
+  const page = context.query.page ? +context.query.page : 1;
   let query = supabase.from('products').select(
     `
       *,
     brands (
       *
     )
-    `
+    `,
+    { count: 'exact' }
   );
   if (keyword) {
     query = query.like('name', `%${keyword}%`);
@@ -68,7 +96,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (type) {
     query = query.eq('type', `${type}`);
   }
-  const { data, error, status } = await query;
+  const startIndex = (page - 1) * PAGE_SIZE;
+  query = query.range(startIndex, startIndex + (PAGE_SIZE - 1));
+  const { data, error, status, count } = await query;
+  const totalCount = count ? count : 0;
 
   if (error && status !== 406) {
     throw error;
@@ -79,6 +110,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       Products: data,
       keyword: keyword,
       type: type,
+      page: page,
+      totalCount: totalCount,
     },
   };
 };
