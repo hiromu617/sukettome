@@ -1,4 +1,4 @@
-import type { NextPage, GetServerSideProps } from 'next';
+import type { NextPage, GetStaticProps } from 'next';
 import { supabase } from '../src/libs/supabase-client';
 import { Stack, HStack, Box, Text, Img } from '@chakra-ui/react';
 import type { Brand } from '../src/features/Brand';
@@ -10,7 +10,6 @@ type Props = {
 };
 
 const Search: NextPage<Props> = ({ brands }) => {
-  console.log(brands);
   return (
     <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
       <SearchForm />
@@ -32,7 +31,7 @@ const Search: NextPage<Props> = ({ brands }) => {
                   p={2}
                   _hover={{ bg: 'gray.100' }}
                 >
-                  <Box w="full" height="80px" borderRadiusTop="lg">
+                  <Box w="full" height="80px">
                     <Img
                       src={brand.official_url!}
                       borderTopRadius="lg"
@@ -55,7 +54,7 @@ const Search: NextPage<Props> = ({ brands }) => {
 
 export default Search;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data, error, status } = await supabase.from('brands').select('*');
   if (error && status !== 406) {
     throw error;
