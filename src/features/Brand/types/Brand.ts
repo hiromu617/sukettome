@@ -1,5 +1,5 @@
 export type Brand = {
-  id: number
+  id: number;
   created_at: string;
   name: string;
   official_url?: string;

@@ -1,30 +1,30 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { Stack, Flex, Icon, Heading, Text, Box, Button } from '@chakra-ui/react';
-import { supabase } from '../../src/libs/supabase-client';
-import { Product } from '../../src/features/Product';
-import { ProductListItem } from '../../src/features/Product';
+import { Stack, Flex, Icon, Heading, Text, Box } from '@chakra-ui/react';
+import { supabase } from '../../../src/libs/supabase-client';
+import { Product } from '../../../src/features/Product';
+import { ProductListItem } from '../../../src/features/Product';
 import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
+import type { Brand } from '../../../src/features/Brand';
 import Link from 'next/link';
-import { Pagination } from '../../src/components/Layout/Pagination';
+import { Pagination } from '../../../src/components/Layout/Pagination';
 import { useRouter } from 'next/router';
 
 type Props = {
   Products: Product[];
-  keyword?: string;
-  type?: string;
   page: number;
   totalCount: number;
+  brand: Brand;
 };
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 10;
 
-const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount }) => {
+const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand }) => {
   const router = useRouter();
   const onClick = (index: number) => {
     router.push({
-      pathname: '/products',
-      query: { keyword: keyword, type: type, page: index },
+      pathname: `/brands/${brand.id}`,
+      query: { page: index },
     });
   };
   return (
@@ -34,7 +34,7 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
           <Flex alignItems="center">
             <Icon as={FcSearch} w={7} h={7} mr="2" />
             <Heading size="md" color="gray.600">
-              {`${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`}
+              {`${brand.name}の商品`}
             </Heading>
           </Flex>
           <Text color="gray.600">{`全${totalCount}件`}</Text>
@@ -70,30 +70,26 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
   );
 };
 
-export default ProductIndex;
+export default BrandId;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const keyword = context.query.keyword;
-  const type = context.query.type;
+  const id = context.params?.id as string;
   const page = context.query.page ? +context.query.page : 1;
-  let query = supabase.from('products').select(
-    `
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const { data: brand } = await supabase.from('brands').select('*').eq('id', id).single();
+  const { data, error, status, count } = await supabase
+    .from('products')
+    .select(
+      `
       *,
     brands (
       *
     )
     `,
-    { count: 'exact' }
-  );
-  if (keyword) {
-    query = query.like('name', `%${keyword}%`);
-  }
-  if (type) {
-    query = query.eq('type', `${type}`);
-  }
-  const startIndex = (page - 1) * PAGE_SIZE;
-  query = query.range(startIndex, startIndex + (PAGE_SIZE - 1));
-  const { data, error, status, count } = await query;
+      { count: 'exact' }
+    )
+    .eq('brand_id', id)
+    .range(startIndex, startIndex + (PAGE_SIZE - 1));
   const totalCount = count ? count : 0;
 
   if (error && status !== 406) {
@@ -103,8 +99,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       Products: data,
-      keyword: keyword,
-      type: type,
+      brand: brand,
       page: page,
       totalCount: totalCount,
     },
