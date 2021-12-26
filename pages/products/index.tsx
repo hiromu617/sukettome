@@ -6,7 +6,7 @@ import { ProductListItem } from '../../src/features/Product';
 import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { Pagination } from '../../src/components/Layout/Pagination';
 
 type Props = {
   Products: Product[];
@@ -16,12 +16,9 @@ type Props = {
   totalCount: number;
 };
 
-const PAGE_SIZE = 2;
-
-const range = (start: number, end: number) => [...Array(end - start + 1)].map((_, i) => start + i);
+const PAGE_SIZE = 10;
 
 const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount }) => {
-  const router = useRouter();
   return (
     <>
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
@@ -55,22 +52,13 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
           </Text>
         </Box>
       )}
-      <ul>
-        {range(1, Math.ceil(totalCount / PAGE_SIZE)).map((number, index) => (
-          <li key={index}>
-            <Button
-              onClick={() =>
-                router.push({
-                  pathname: '/products',
-                  query: { keyword: keyword, type: type, page: number },
-                })
-              }
-            >
-              {number}
-            </Button>
-          </li>
-        ))}
-      </ul>
+      <Pagination
+        totalCount={totalCount}
+        pageSize={PAGE_SIZE}
+        keyword={keyword}
+        type={type}
+        currentPage={page}
+      />
     </>
   );
 };
