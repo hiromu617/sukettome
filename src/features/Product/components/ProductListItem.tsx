@@ -11,7 +11,7 @@ type Props = {
 
 export const ProductListItem: VFC<Props> = ({ product }) => {
   return (
-    <Link href={`products/${product.id}`} passHref>
+    <Link href={`/products/${product.id}`} passHref>
       <Flex
         bg="white"
         shadow="lg"
