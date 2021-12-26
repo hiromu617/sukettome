@@ -17,7 +17,7 @@ const Search: NextPage<Props> = ({ brands }) => {
         <Text mb={2} fontWeight="bold" fontSize="lg">
           ブランドから探す
         </Text>
-        <HStack wrap="wrap" py={2}>
+        <HStack wrap="wrap" py={2} spacing={4}>
           {brands.map((brand) => {
             return (
               <Link key={brand.id} href={`/brands/${brand.id}`} passHref>
@@ -33,15 +33,15 @@ const Search: NextPage<Props> = ({ brands }) => {
                 >
                   <Box w="full" height="80px">
                     <Img
-                      src={brand.official_url!}
+                      src={`brands/${brand.name}.png`}
                       borderTopRadius="lg"
                       alt={brand.name}
                       objectFit="cover"
-                      boxSize="80px"
+                      boxSize="70px"
                       margin="auto"
                     />
                   </Box>
-                  <Text fontWeight="bold">{brand.name}</Text>
+                  <Text color="gray.700">{brand.name}</Text>
                 </Box>
               </Link>
             );
