@@ -6,7 +6,7 @@ import {
   Text,
   Spacer,
   Badge,
-  Icon,
+  Center,
   Stack,
   Heading,
   Img,
@@ -15,7 +15,6 @@ import {
   Divider,
   HStack,
 } from '@chakra-ui/react';
-import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { StarIcon } from '@chakra-ui/icons';
 import Rating from 'react-rating';
 import { LikeButton } from '../../Like';
@@ -28,14 +27,15 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
   return (
     <VStack bg="white" shadow="lg" borderRadius="lg" w="full" p={5}>
       <SimpleGrid columns={[1, 1, 2]} w="full" spacing={10}>
-        <Box>
+        <Center>
           <Img
             src={product.image_urls[0]}
             borderTopRadius="lg"
             alt={product.name}
             objectFit="cover"
+            m="auto"
           />
-        </Box>
+        </Center>
         <Stack h="100%" py={5} align="stretch">
           <Box d="flex" alignItems="baseline">
             <Badge

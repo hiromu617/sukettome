@@ -25,7 +25,7 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
             src={product.image_urls[0]}
             borderTopRadius="lg"
             alt={product.name}
-            objectFit="cover"
+            objectFit="contain"
             boxSize="150px"
             margin="auto"
           />
