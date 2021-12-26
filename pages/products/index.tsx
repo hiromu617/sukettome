@@ -29,7 +29,7 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
               {`${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`}
             </Heading>
           </Flex>
-          <Text color="gray.600">{`全${Products.length}件`}</Text>
+          <Text color="gray.600">{`全${totalCount}件`}</Text>
         </Flex>
       </Stack>
       <Box mt={5}>
