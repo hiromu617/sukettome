@@ -20,7 +20,7 @@ export const ProductCard: VFC<Props> = ({ product }) => {
         cursor="pointer"
         _hover={{ shadow: 'xl' }}
       >
-        <Box w="full" height="200px" borderRadiusTop="lg">
+        <Box w="full" height="200px">
           <Img
             src={product.image_urls[0]}
             borderTopRadius="lg"
