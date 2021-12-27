@@ -49,8 +49,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   )
 `
     )
-    .eq('brand_id', data.brands.id)
-    .neq('id', ProductId)
+    .eq('brand_id', data.brand_id)
+    .neq('id', data.id)
     .range(0, 5);
   return {
     props: {
