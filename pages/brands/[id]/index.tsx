@@ -41,7 +41,6 @@ const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand, sort }) =
       <BreadcrumbNav
         lists={[
           { name: 'HOME', href: '/' },
-          { name: '検索', href: '/search' },
           { name: `${brand.name}`, href: `/brands/${brand.id}` },
         ]}
       />

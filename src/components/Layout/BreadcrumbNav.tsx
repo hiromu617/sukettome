@@ -7,6 +7,7 @@ import {
   BreadcrumbSeparator,
 } from '@chakra-ui/react';
 import Link from 'next/link';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
 type Props = {
   lists: { name: string; href?: string; isCurrentPage?: boolean }[];
@@ -15,7 +16,7 @@ type Props = {
 export const BreadcrumbNav: VFC<Props> = ({ lists }) => {
   return (
     <Flex w="full" mb={4}>
-      <Breadcrumb>
+      <Breadcrumb separator={<ChevronRightIcon color="gray.500" />}>
         {lists.map((item, i) => {
           return (
             <BreadcrumbItem isCurrentPage={item.isCurrentPage} key={i}>

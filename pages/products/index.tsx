@@ -42,7 +42,6 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
       <BreadcrumbNav
         lists={[
           { name: 'HOME', href: '/' },
-          { name: '検索', href: '/search' },
           { name: `${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`, href: `#` },
         ]}
       />
