@@ -9,6 +9,7 @@ import type { Brand } from '../../../src/features/Brand';
 import Link from 'next/link';
 import { Pagination } from '../../../src/components/Layout/Pagination';
 import { useRouter } from 'next/router';
+import { BreadcrumbNav } from '../../../src/components/Layout/BreadcrumbNav';
 import { SortMenu } from '../../../src/components/Layout/SortMenu';
 
 type Props = {
@@ -37,6 +38,12 @@ const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand, sort }) =
   };
   return (
     <>
+      <BreadcrumbNav
+        lists={[
+          { name: 'HOME', href: '/' },
+          { name: `${brand.name}`, href: `/brands/${brand.id}` },
+        ]}
+      />
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
         <Flex px={2} alignItems="center" justify="space-between">
           <Flex alignItems="center">
