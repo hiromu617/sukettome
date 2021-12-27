@@ -4,10 +4,11 @@ import { supabase } from '../../../libs/supabase-client';
 import type { Review } from '../';
 import { ReviewCard } from '../index';
 import Link from 'next/link';
+import type { Product } from '../../Product';
 import useSWRInfinite from 'swr/infinite';
 
 type ReviewListProps = {
-  productId: number;
+  product: Product;
 };
 
 const fetcher = async (productId: number, pageIndex: number) => {
@@ -34,10 +35,10 @@ const fetcher = async (productId: number, pageIndex: number) => {
   return [];
 };
 
-export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
+export const ReviewList: VFC<ReviewListProps> = ({ product }) => {
   const getKey = (pageIndex: number, previousPageData: Review[]) => {
     if (previousPageData && !previousPageData.length) return null; // 最後に到達した
-    return [productId, pageIndex];
+    return [product.id, pageIndex];
   };
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
   const isLast = data ? data.filter((list) => list.length < 5).length > 0 : false;
@@ -49,7 +50,13 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
           <Heading size={'md'} color="gray.600" textAlign="left" mb={2}>
             レビュー
           </Heading>
-          <Link href={`/products/${productId}/reviews/new`} passHref>
+          <Link
+            href={{
+              pathname: `/products/${product.id}/reviews/new`,
+              query: { name: product.name },
+            }}
+            passHref
+          >
             <Button as="a" color="white" bg="gray.900" _hover={{ bg: 'gray.500' }}>
               レビューする
             </Button>
@@ -67,7 +74,13 @@ export const ReviewList: VFC<ReviewListProps> = ({ productId }) => {
         <Heading size={'md'} color="gray.600" textAlign="left" mb={2}>
           レビュー
         </Heading>
-        <Link href={`/products/${productId}/reviews/new`} passHref>
+        <Link
+          href={{
+            pathname: `/products/${product.id}/reviews/new`,
+            query: { name: product.name },
+          }}
+          passHref
+        >
           <Button as="a" color="white" bg="gray.900" _hover={{ bg: 'gray.500' }}>
             レビューする
           </Button>

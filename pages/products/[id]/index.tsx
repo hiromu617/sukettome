@@ -11,9 +11,9 @@ type Props = {
 
 const ProductId: NextPage<Props> = ({ product }) => {
   return (
-    <VStack spacing={16}>
+    <VStack>
       <ProductDetail product={product} />
-      <ReviewList productId={product.id}/>
+      <ReviewList product={product} />
     </VStack>
   );
 };

@@ -7,6 +7,7 @@ import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { Pagination } from '../../src/components/Layout/Pagination';
+import { BreadcrumbNav } from '../../src/components/Layout/BreadcrumbNav';
 import { SortMenu } from '../../src/components/Layout/SortMenu';
 import { useRouter } from 'next/router';
 
@@ -38,6 +39,13 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
   };
   return (
     <>
+      <BreadcrumbNav
+        lists={[
+          { name: 'HOME', href: '/' },
+          { name: '検索', href: '/search' },
+          { name: `${keyword ? `「${keyword}」` : '全て'}の${type ? type : '商品'}`, href: `#` },
+        ]}
+      />
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
         <Flex px={2} alignItems="center" justify="space-between">
           <Flex alignItems="center">
