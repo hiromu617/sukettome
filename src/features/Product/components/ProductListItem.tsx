@@ -35,7 +35,7 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
             <Link
               href={{
                 pathname: '/products',
-                query: { type: product.type, keyword: ''},
+                query: { type: product.type, keyword: '' },
               }}
               passHref
             >
@@ -55,11 +55,17 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
               {product.name}
             </Heading>
           </Flex>
-          <Link href={`/brands/${product.brands?.id}`} passHref>
-            <Text fontSize="md" color="gray.500" _hover={{ textDecoration: 'underline' }}>
-              {product.brands?.name}
-            </Text>
-          </Link>
+          <Box>
+            <Link href={`/brands/${product.brands?.id}`} passHref>
+              <Text
+                fontSize="md"
+                color="gray.500"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                {product.brands?.name}
+              </Text>
+            </Link>
+          </Box>
           <Flex justifyContent="space-between" alignContent="center" flexWrap="nowrap">
             <Rating
               initialRating={product.rate}
