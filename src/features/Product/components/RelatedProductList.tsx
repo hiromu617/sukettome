@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { Stack, Flex, Heading, Icon } from '@chakra-ui/react';
+import { Stack, Flex, Heading, Icon, Box, Text } from '@chakra-ui/react';
 import { Product, ProductListItem } from '..';
 import { FcList } from 'react-icons/fc';
 
@@ -19,6 +19,13 @@ export const RelatedProductList: VFC<Props> = ({ products }) => {
       {products.map((product) => {
         return <ProductListItem key={product.id} product={product} />;
       })}
+      {products.length <= 0 && (
+        <Box py="4" textAlign="center">
+          <Text size={'md'} color="gray.600">
+            関連商品はありません
+          </Text>
+        </Box>
+      )}
     </Stack>
   );
 };

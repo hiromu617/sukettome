@@ -1,5 +1,5 @@
 import { VFC } from 'react';
-import { Stack, Heading, Divider, Box, Button, Flex, Spinner } from '@chakra-ui/react';
+import { Stack, Heading, Divider, Box, Button, Flex, Spinner, Text } from '@chakra-ui/react';
 import { supabase } from '../../../libs/supabase-client';
 import type { Review } from '../';
 import { ReviewCard } from '../index';
@@ -86,6 +86,11 @@ export const ReviewList: VFC<ReviewListProps> = ({ product }) => {
           </Button>
         </Link>
       </Flex>
+      {data[0].length <= 0 && (
+        <Box py="4" textAlign="center">
+          <Text size={'md'} color="gray.600">レビューはまだありません</Text>
+        </Box>
+      )}
       {data.map((reviewList) => {
         return reviewList.map((review) => {
           return <ReviewCard review={review} key={review.id} />;
