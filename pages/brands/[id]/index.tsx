@@ -9,22 +9,30 @@ import type { Brand } from '../../../src/features/Brand';
 import Link from 'next/link';
 import { Pagination } from '../../../src/components/Layout/Pagination';
 import { useRouter } from 'next/router';
+import { SortMenu } from '../../../src/components/Layout/SortMenu';
 
 type Props = {
   Products: Product[];
   page: number;
   totalCount: number;
   brand: Brand;
+  sort: string;
 };
 
 const PAGE_SIZE = 10;
 
-const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand }) => {
+const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand, sort }) => {
   const router = useRouter();
   const onClick = (index: number) => {
     router.push({
       pathname: `/brands/${brand.id}`,
       query: { page: index },
+    });
+  };
+  const onSortChange = (value: string) => {
+    router.push({
+      pathname: `/brands/${brand.id}`,
+      query: { sort: value },
     });
   };
   return (
@@ -48,6 +56,9 @@ const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand }) => {
           </Flex>
         </Link>
       </Box>
+      <Flex justify="end">
+        <SortMenu onPush={onSortChange} currentSortType={sort} />
+      </Flex>
       <Stack mt={5} w="full" spacing={4}>
         {Products.map((Product) => {
           return <ProductListItem key={Product.id} product={Product} />;
@@ -75,9 +86,11 @@ export default BrandId;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id as string;
   const page = context.query.page ? +context.query.page : 1;
+  const sort = context.query.sort ? context.query.sort : 'new';
+
   const startIndex = (page - 1) * PAGE_SIZE;
   const { data: brand } = await supabase.from('brands').select('*').eq('id', id).single();
-  const { data, error, status, count } = await supabase
+  let query = supabase
     .from('products')
     .select(
       `
@@ -90,6 +103,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     )
     .eq('brand_id', id)
     .range(startIndex, startIndex + (PAGE_SIZE - 1));
+  if (sort === 'new') {
+    query = query.order('created_at', { ascending: false });
+  } else if (sort === 'rate') {
+    query = query.order('rate', { ascending: false });
+  } else if (sort === 'higher') {
+    query = query.order('price', { ascending: false });
+  } else if (sort === 'lower') {
+    query = query.order('price', { ascending: true });
+  }
+  const { data, error, status, count } = await query;
   const totalCount = count ? count : 0;
 
   if (error && status !== 406) {
@@ -102,6 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       brand: brand,
       page: page,
       totalCount: totalCount,
+      sort: sort,
     },
   };
 };
