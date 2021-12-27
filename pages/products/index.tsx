@@ -7,6 +7,7 @@ import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { Pagination } from '../../src/components/Layout/Pagination';
+import { SortMenu } from '../../src/components/Layout/SortMenu';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -15,16 +16,24 @@ type Props = {
   type?: string;
   page: number;
   totalCount: number;
+  sort: string;
 };
 
 const PAGE_SIZE = 10;
 
-const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount }) => {
+const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCount, sort }) => {
   const router = useRouter();
   const onClick = (index: number) => {
     router.push({
       pathname: '/products',
       query: { keyword: keyword, type: type, page: index },
+    });
+  };
+
+  const onSortChange = (value: string) => {
+    router.push({
+      pathname: '/products',
+      query: { keyword: keyword, type: type, sort: value },
     });
   };
   return (
@@ -48,6 +57,9 @@ const ProductIndex: NextPage<Props> = ({ Products, keyword, type, page, totalCou
           </Flex>
         </Link>
       </Box>
+      <Flex justify="end">
+        <SortMenu onPush={onSortChange} currentSortType={sort} />
+      </Flex>
       <Stack mt={5} w="full" spacing={4}>
         {Products.map((Product) => {
           return <ProductListItem key={Product.id} product={Product} />;
@@ -76,6 +88,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const keyword = context.query.keyword;
   const type = context.query.type;
   const page = context.query.page ? +context.query.page : 1;
+  const sort = context.query.sort ? context.query.sort : 'new';
+
   let query = supabase.from('products').select(
     `
       *,
@@ -91,6 +105,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (type) {
     query = query.eq('type', `${type}`);
   }
+  if (sort === 'new') {
+    query = query.order('created_at', { ascending: false });
+  } else if (sort === 'rate') {
+    query = query.order('rate', { ascending: false });
+  } else if (sort === 'higher') {
+    query = query.order('price', { ascending: false });
+  } else if (sort === 'lower') {
+    query = query.order('price', { ascending: true });
+  }
+
   const startIndex = (page - 1) * PAGE_SIZE;
   query = query.range(startIndex, startIndex + (PAGE_SIZE - 1));
   const { data, error, status, count } = await query;
@@ -107,6 +131,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       type: type,
       page: page,
       totalCount: totalCount,
+      sort: sort,
     },
   };
 };

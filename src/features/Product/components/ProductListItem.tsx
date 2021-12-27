@@ -20,7 +20,7 @@ export const ProductListItem: VFC<Props> = ({ product }) => {
         cursor="pointer"
         _hover={{ shadow: 'xl' }}
       >
-        <Box p={2} height="full" borderRadiusTop="lg">
+        <Box p={2} height="full">
           <Img
             src={product.image_urls[0]}
             borderTopRadius="lg"
