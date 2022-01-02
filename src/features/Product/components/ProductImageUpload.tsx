@@ -1,16 +1,17 @@
 import { VFC, useState } from 'react';
-import { Avatar, Text, Spinner, Box } from '@chakra-ui/react';
-import { User, useUpdateUserAvatarUrl } from '..';
+import { Text, Spinner, Box } from '@chakra-ui/react';
 import { supabase } from '../../../libs/supabase-client';
 import { useShowToast } from '../../../hooks/useShowToast';
+import { useUpdateProductImage } from '../';
+import type { Product } from '../';
 import Resizer from 'react-image-file-resizer';
 
-type AvatarUploadProps = {
-  currentUser: User;
+type Props = {
+  product: Product;
 };
 
-export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
-  const { updateUserAvatarUrl } = useUpdateUserAvatarUrl();
+export const ProductImageUpload: VFC<Props> = ({ product }) => {
+  const { updateProductImage } = useUpdateProductImage();
   const [uploading, setUploading] = useState(false);
   const { showToast } = useShowToast();
 
@@ -21,14 +22,14 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error('You must select an image to upload.');
       }
-      const file = await resizeFile(event.target.files[0])
+      const file = await resizeFile(event.target.files[0]);
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
       // avatars/${Math.random()}.${fileExt} に保存。
       const { data, error: uploadError } = await supabase.storage
-        .from('avatars')
+        .from('product-images')
         .upload(filePath, file);
 
       if (uploadError) {
@@ -47,10 +48,10 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
     return new Promise((resolve) => {
       Resizer.imageFileResizer(
         file,
-        150,
-        150,
+        300,
+        300,
         'JPEG',
-        30,
+        70,
         0,
         (file) => {
           resolve(file as File);
@@ -63,15 +64,17 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
   // filePathからURLを取得しDBを更新。
   const onUpload = async (filePath: string) => {
     try {
-      const { publicURL, error } = await supabase.storage.from('avatars').getPublicUrl(filePath);
+      const { publicURL, error } = await supabase.storage
+        .from('product-images')
+        .getPublicUrl(filePath);
 
       if (error) {
         throw error;
       }
 
       if (publicURL) {
-        updateUserAvatarUrl(currentUser.id, publicURL);
-        showToast('プロフィール画像を更新しました', '', 'success');
+        await updateProductImage(product.id, publicURL);
+        showToast('商品画像を更新しました', '', 'success');
       }
     } catch (e) {
       console.error(e);
@@ -80,14 +83,13 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
 
   return (
     <>
-      <Avatar name={currentUser.user_name} src={currentUser.avatar_url} size="xl" />
       {uploading ? (
         <Box textAlign="center">
           <Spinner />
         </Box>
       ) : (
         <Text as="label" htmlFor="single" textAlign="center" color="blue.500" fontWeight="bold">
-          変更
+          商品画像を追加
         </Text>
       )}
       <input

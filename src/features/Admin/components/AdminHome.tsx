@@ -49,7 +49,7 @@ export const AdminHome: VFC = () => {
   });
 
   useEffect(() => {
-    if (currentUser?.id !== process.env.NEXT_PUBLIC_ADMIN_USER_ID) router.push('/');
+    if (currentUser?.id !== process.env.NEXT_PUBLIC_ADMIN_USER_ID) router.replace('/');
   }, [router, currentUser]);
 
   const onSubmit: SubmitHandler<ProductForm> = (data) => {
