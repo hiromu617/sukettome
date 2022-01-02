@@ -2,6 +2,7 @@ import { VFC } from 'react';
 import type { Product } from '../';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useUpdateProduct } from '../';
+import { useSWRConfig } from 'swr'
 import {
   Box,
   Flex,
@@ -32,6 +33,7 @@ type Props = {
 
 export const ProductAdminForm: VFC<Props> = ({ product }) => {
   const { updateProduct } = useUpdateProduct();
+  const { mutate } = useSWRConfig()
   const {
     control,
     handleSubmit,
@@ -53,7 +55,7 @@ export const ProductAdminForm: VFC<Props> = ({ product }) => {
     try {
       console.log(data);
       if (!product) return;
-      updateProduct(product?.id, {
+      await updateProduct(product?.id, {
         name: data.name,
         product_link: data.product_link,
         detail: data.detail,
@@ -62,6 +64,7 @@ export const ProductAdminForm: VFC<Props> = ({ product }) => {
         brand_id: data.brand_id,
       });
       showToast('商品を更新しました', '', 'success');
+      mutate([`products`, product.id])
     } catch (e) {
       showToast(String(e), '', 'error');
     }
