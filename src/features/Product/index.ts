@@ -5,6 +5,7 @@ import { ProductDetail } from './components/ProductDetail';
 import { ProductListItem } from './components/ProductListItem';
 import { RelatedProductList } from './components/RelatedProductList';
 import { ProductList } from './components/ProductList';
+import { ProductAdmin } from './components/ProductAdmin';
 
 export type { Product };
 export {
@@ -14,4 +15,5 @@ export {
   ProductListItem,
   ProductList,
   RelatedProductList,
+  ProductAdmin,
 };
