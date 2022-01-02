@@ -26,6 +26,7 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
+      // avatars/${Math.random()}.${fileExt} に保存。
       const { data, error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
@@ -59,6 +60,7 @@ export const AvatarUpload: VFC<AvatarUploadProps> = ({ currentUser }) => {
     });
   };
 
+  // filePathからURLを取得しDBを更新。
   const onUpload = async (filePath: string) => {
     try {
       const { publicURL, error } = await supabase.storage.from('avatars').getPublicUrl(filePath);
