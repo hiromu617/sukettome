@@ -19,12 +19,15 @@ import { StarIcon } from '@chakra-ui/icons';
 import Rating from 'react-rating';
 import { LikeButton } from '../../Like';
 import { BreadcrumbNav } from '../../../components/Layout/BreadcrumbNav';
+import Link from 'next/link';
+import { useCurrentUser } from '../../User';
 
 type Props = {
   product: Product;
 };
 
 export const ProductDetail: VFC<Props> = ({ product }) => {
+  const { currentUser } = useCurrentUser();
   return (
     <Stack pb={10}>
       <BreadcrumbNav
@@ -34,6 +37,11 @@ export const ProductDetail: VFC<Props> = ({ product }) => {
           { name: `${product.name}`, isCurrentPage: true },
         ]}
       />
+      {currentUser?.id === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
+        <Link href={`/products/${product.id}/admin`} passHref>
+          <Button>Admin</Button>
+        </Link>
+      )}
       <VStack bg="white" shadow="lg" borderRadius="lg" w="full" p={5}>
         <SimpleGrid columns={[1, 1, 2]} w="full" spacing={10}>
           <Center>

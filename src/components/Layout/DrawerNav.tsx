@@ -7,10 +7,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Stack,
-  Flex,
   Icon,
-  Text,
-  IconButton,
 } from '@chakra-ui/react';
 import { useSession } from '../../features/Auth';
 import { useShowToast } from '../../hooks/useShowToast';
