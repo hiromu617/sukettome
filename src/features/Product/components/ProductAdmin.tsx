@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useCurrentUser } from '../../User';
 import { supabase } from '../../../libs/supabase-client';
 import useSWR from 'swr';
+import { ProductAdminForm } from './ProductAdminForm';
 
 const fetcher = async (model: string, id: string) => {
   const { data, error, status } = await supabase.from(model).select('*').eq('id', id).single();
@@ -26,5 +27,5 @@ export const ProductAdmin: VFC = () => {
 
   if (error) return <>error occured</>;
 
-  return <>{data.name}</>;
+  return <ProductAdminForm product={data} />;
 };
