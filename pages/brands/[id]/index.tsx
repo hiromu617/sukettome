@@ -1,9 +1,8 @@
 import type { NextPage, GetServerSideProps } from 'next';
-import { Stack, Flex, Icon, Heading, Text, Box } from '@chakra-ui/react';
+import { Stack, Flex, Img, Heading, Text, Box } from '@chakra-ui/react';
 import { supabase } from '../../../src/libs/supabase-client';
 import { Product } from '../../../src/features/Product';
 import { ProductListItem } from '../../../src/features/Product';
-import { FcSearch } from 'react-icons/fc';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import type { Brand } from '../../../src/features/Brand';
 import Link from 'next/link';
@@ -47,13 +46,25 @@ const BrandId: NextPage<Props> = ({ Products, page, totalCount, brand, sort }) =
       <Stack bg="white" px={4} py={6} shadow="lg" borderRadius="lg">
         <Flex px={2} alignItems="center" justify="space-between">
           <Flex alignItems="center">
-            <Icon as={FcSearch} w={7} h={7} mr="2" />
-            <Heading size="md" color="gray.600">
-              {`${brand.name}の商品`}
+            <Box w="80px" height="80px">
+              <Img
+                src={`/brands/${brand.name}.png`}
+                borderTopRadius="lg"
+                alt={brand.name}
+                objectFit="cover"
+                boxSize="70px"
+                margin="auto"
+              />
+            </Box>
+            <Heading size="lg" color="gray.600" ml={2}>
+              {brand.name}
             </Heading>
           </Flex>
           <Text color="gray.600">{`全${totalCount}件`}</Text>
         </Flex>
+        <Box p={4}>
+          <Text fontSize="md" color="gray.600">{brand.description}</Text>
+        </Box>
       </Stack>
       <Box mt={5}>
         <Link href="/search" passHref>

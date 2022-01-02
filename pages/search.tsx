@@ -33,7 +33,7 @@ const Search: NextPage<Props> = ({ brands }) => {
                 >
                   <Box w="full" height="80px">
                     <Img
-                      src={`brands/${brand.name}.png`}
+                      src={`/brands/${brand.name}.png`}
                       borderTopRadius="lg"
                       alt={brand.name}
                       objectFit="cover"
